@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<title>Derbi Kapışması — Şampiyonlar Ligi Finali</title>
+<meta name="theme-color" content="#07060B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Derbi">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div id="rotate">
+  <div class="rotate-inner">
+    <div class="rotate-phone"></div>
+    <p>Dreh das Handy quer.<br><span>Der Ring steht im Querformat.</span></p>
+  </div>
+</div>
+
+<main id="app">
+
+  <!-- ============ DASHBOARD ============ -->
+  <section class="screen" id="s-home" data-active="1">
+    <div class="home-scroll">
+      <header class="brand">
+        <div class="brand-kicker">Şampiyonlar Ligi Finali · Frankfurt</div>
+        <h1 class="brand-title">DERBİ<br><em>KAPIŞMASI</em></h1>
+        <div class="brand-rule"><span></span><b>3 Kämpfer · 1 Pokal</b><span></span></div>
+      </header>
+
+      <div class="trophy-case" id="trophyCase"></div>
+
+      <nav class="modes">
+        <button class="mode mode-main" data-mode="tournament">
+          <span class="mode-tag">Hauptmodus</span>
+          <span class="mode-name">Turnier</span>
+          <span class="mode-desc">Zwei Kämpfe bis zum Pokal</span>
+        </button>
+        <button class="mode" data-mode="quick">
+          <span class="mode-name">Schnellkampf</span>
+          <span class="mode-desc">Ein Kampf gegen die KI</span>
+        </button>
+        <button class="mode" data-mode="versus">
+          <span class="mode-name">2 Spieler</span>
+          <span class="mode-desc">Ein Handy, zwei Daumen</span>
+        </button>
+      </nav>
+
+      <div class="roster-head">
+        <h2>Der Kader</h2>
+        <p>Tippen für Werte und Moves</p>
+      </div>
+      <div class="roster" id="roster"></div>
+
+      <div class="settings">
+        <div class="set-row">
+          <label>Schwierigkeit</label>
+          <div class="seg" id="diffSeg">
+            <button data-diff="0">Amateur</button>
+            <button data-diff="1" class="on">Profi</button>
+            <button data-diff="2">Legende</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <label>Ton</label>
+          <div class="seg" id="soundSeg">
+            <button data-snd="1" class="on">An</button>
+            <button data-snd="0">Aus</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <label>Rundenlänge</label>
+          <div class="seg" id="timeSeg">
+            <button data-time="45">45 s</button>
+            <button data-time="75" class="on">75 s</button>
+            <button data-time="99">99 s</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <label>Chaos-Modus</label>
+          <div class="seg" id="chaosSeg">
+            <button data-chaos="0" class="on">Aus</button>
+            <button data-chaos="1">An</button>
+          </div>
+        </div>
+      </div>
+      <p class="chaos-hint" id="chaosHint">Chaos-Modus: jede Runde ein zufälliger Modifikator — doppelter Schaden, volle Leiste, freie Ausdauer oder Sudden Death.</p>
+
+      <div class="records" id="records"></div>
+      <p class="foot">Gebaut für Mikail, Beytullah &amp; Ibo.<br>Jeder Treffer ist nur Spaß.</p>
+    </div>
+  </section>
+
+  <!-- ============ CHARAKTERWAHL ============ -->
+  <section class="screen" id="s-select">
+    <div class="sel-top">
+      <button class="back" data-back="home">Zurück</button>
+      <div class="sel-title" id="selTitle">Spieler 1 wählt</div>
+    </div>
+    <div class="sel-stage" id="selStage"></div>
+    <div class="sel-info" id="selInfo"></div>
+    <div class="sel-strip" id="selStrip"></div>
+    <button class="cta" id="selConfirm">Bestätigen</button>
+  </section>
+
+  <!-- ============ VS-INTRO ============ -->
+  <section class="screen" id="s-intro">
+    <div class="intro-bg"></div>
+    <div class="intro-belt intro-belt-a" id="beltA"></div>
+    <div class="intro-belt intro-belt-b" id="beltB"></div>
+    <div class="intro-fighter intro-left" id="introL"><img alt=""></div>
+    <div class="intro-fighter intro-right" id="introR"><img alt=""></div>
+    <div class="intro-name intro-name-l" id="introNameL"></div>
+    <div class="intro-name intro-name-r" id="introNameR"></div>
+    <div class="intro-vs" id="introVS">VS</div>
+    <div class="intro-stage" id="introStage"></div>
+    <div class="intro-count" id="introCount"></div>
+  </section>
+
+  <!-- ============ KAMPF ============ -->
+  <section class="screen" id="s-fight">
+    <div class="hud">
+      <div class="hud-side hud-side-l">
+        <div class="hud-top"><img class="hud-logo" id="logoL" alt=""><span id="nameL" class="hud-nm"></span></div>
+        <div class="hp"><i class="ghost" id="ghostL"></i><i class="fill" id="hpL"></i><u></u></div>
+        <div class="hud-bot">
+          <div class="sub">
+            <div class="st"><i id="stL"></i></div>
+            <div class="mt" id="mtWrapL"><i id="mtL"></i></div>
+          </div>
+          <div class="pips" id="pipsL"></div>
+        </div>
+      </div>
+      <div class="hud-clock"><b id="clock">75</b><i id="roundTag">R1</i></div>
+      <div class="hud-side hud-side-r">
+        <div class="hud-top"><span id="nameR" class="hud-nm"></span><img class="hud-logo" id="logoR" alt=""></div>
+        <div class="hp rev"><i class="ghost" id="ghostR"></i><i class="fill" id="hpR"></i><u></u></div>
+        <div class="hud-bot rev">
+          <div class="sub rev">
+            <div class="st"><i id="stR"></i></div>
+            <div class="mt" id="mtWrapR"><i id="mtR"></i></div>
+          </div>
+          <div class="pips" id="pipsR"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arena" id="arena">
+      <div class="cam" id="cam">
+        <div class="crowd"></div>
+        <div class="spot spot-l"></div>
+        <div class="spot spot-r"></div>
+        <div class="ropes3d"></div>
+        <div class="ring-floor"><div class="ring-circle"></div></div>
+        <div class="post post-bl"></div>
+        <div class="post post-br"></div>
+        <div class="post post-fl"></div>
+        <div class="post post-fr"></div>
+        <div class="shadow" id="shL"></div>
+        <div class="shadow" id="shR"></div>
+        <div class="fighter f-l" id="fL"></div>
+        <div class="fighter f-r" id="fR"></div>
+      </div>
+      <canvas id="fx"></canvas>
+      <div class="rage-vin" id="rageVin"></div>
+      <div class="impact-flash" id="impactFlash"></div>
+      <div class="pop-layer" id="pops"></div>
+      <div class="announce" id="announce"></div>
+      <div class="mod-badge" id="modBadge"></div>
+      <div class="cpu-strip" id="cpuStrip"></div>
+      <button class="pause-btn" id="pauseBtn" aria-label="Pause">II</button>
+
+      <div class="pads" id="pads">
+        <div class="pad pad-l" data-side="l">
+          <div class="pad-row">
+            <button class="btn b-jab" data-act="jab"><b>JAB</b></button>
+            <button class="btn b-hook" data-act="hook"><b>HAKEN</b></button>
+            <button class="btn b-body" data-act="body"><b>BODY</b></button>
+          </div>
+          <div class="pad-row">
+            <button class="btn b-block" data-act="block"><b>BLOCK</b></button>
+            <button class="btn b-spec" data-act="special"><b>SPEC.</b><small class="sname"></small><i class="ovc"></i></button>
+            <button class="btn b-emote" data-act="emote">😤</button>
+          </div>
+          <div class="emote-tray" data-tray="l"></div>
+        </div>
+        <div class="pad pad-r" data-side="r">
+          <div class="pad-row">
+            <button class="btn b-emote" data-act="emote">😤</button>
+            <button class="btn b-spec" data-act="special"><b>SPEC.</b><small class="sname"></small><i class="ovc"></i></button>
+            <button class="btn b-block" data-act="block"><b>BLOCK</b></button>
+          </div>
+          <div class="pad-row">
+            <button class="btn b-body" data-act="body"><b>BODY</b></button>
+            <button class="btn b-hook" data-act="hook"><b>HAKEN</b></button>
+            <button class="btn b-jab" data-act="jab"><b>JAB</b></button>
+          </div>
+          <div class="emote-tray" data-tray="r"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="pauseOv">
+      <div class="ov-card">
+        <h3>Pause</h3>
+        <button class="cta" id="resumeBtn">Weiterkämpfen</button>
+        <button class="ghost-btn" id="quitBtn">Kampf abbrechen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ERGEBNIS ============ -->
+  <section class="screen" id="s-result">
+    <div class="res-glow" id="resGlow"></div>
+    <div class="res-crown" id="resCrown"></div>
+    <div class="res-fighter" id="resFighter"><img alt=""></div>
+    <div class="res-copy">
+      <div class="res-kicker" id="resKicker"></div>
+      <h2 class="res-name" id="resName"></h2>
+      <div class="res-badge" id="resBadge"></div>
+      <div class="res-line" id="resLine"></div>
+      <div class="res-stats" id="resStats"></div>
+    </div>
+    <div class="res-actions">
+      <button class="cta" id="resNext">Weiter</button>
+      <button class="ghost-btn" id="resHome">Zum Dashboard</button>
+    </div>
+    <canvas id="confetti"></canvas>
+  </section>
+
+</main>
+
+<script src="./app.js"></script>
+</body>
+</html>
